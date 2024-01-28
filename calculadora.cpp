@@ -15,6 +15,7 @@ void buscar_Ohms();
 void buscar_KOhms();
 void buscar_MOhms();
 void buscar_GOhms();
+bool entero_o_flotante(float); //para saber si el numero ingresado es entero o flotante
 
  map<string,int>tolerancia ={
 	   	{"Marron",1},
@@ -38,6 +39,21 @@ void buscar_GOhms();
 	   	{"Plata",11}
 	   };
 
+	map<int,string>valores_de_bandas = {
+		{0,"Negro"},
+		{1,"Marron"},
+		{2,"Rojo"},
+		{3,"Naranja"},
+		{4,"Amarillo"},
+		{5,"Verde"},
+		{6,"Azul"},
+		{7,"Violeta"},
+		{8,"Gris"},
+		{9,"Blanco"},
+		{10,"Dorado"},
+		{11,"Plata"}
+	};   
+
 string bandaTolerancia, banda3;
 long long resistencia_aux = 0L;
 
@@ -56,8 +72,6 @@ void menu(){
   cout << "3.- Salir"<<endl;
   cout << "Opcion: ";
   cin >> opcion;
-  
-  
   
   switch(opcion){
      case 1: calcularResistencia4();  break;  
@@ -266,16 +280,70 @@ void res_gigaOhms(long long resistencia){
 	menu();	
 }
 
+bool entero_o_flotante(float f){
+	int ent;
+	ent = f;
+
+	if(f-ent){
+		return true; //retorna true si el numero es flotante
+	}
+	else{
+		return false;//retorna false si el numero es entero
+	}
+}
+
 void buscar_Ohms(){
 	
 }
 
 void buscar_KOhms(){
 	system("cls");
-	int x = 10;
-	
+	float valorMomentaneo,resistenciaFlotante = 0;
+	int resistenciaEntera;
+	string terceraBanda,numero,primerBanda,segundaBanda;
+	int digito1,digito2,aux;
+
+
 	cout<<"\tParametros de la resistencia";
-	cout<<"\nPon cualquier valor de resistencia que desees buscar";
+	cout<<"\nPon cualquier valor de resistencia que desees buscar,estas en la escala de K Ohms";
 	cout<<"\nEse valor obviamente debe de estar en dicha escala para poder mostar los resusltados correctos";
-	cout<<"\n\nIngresa un valor de resistencia: ";
+	cout<<"\n\nIngresa un valor de resistencia: "; cin>>valorMomentaneo;
+	if(entero_o_flotante(valorMomentaneo)){
+		resistenciaFlotante = valorMomentaneo;
+	}
+	else{
+		resistenciaEntera = valorMomentaneo;
+	}
+	if (resistenciaEntera != 0){
+		numero = to_string(resistenciaEntera);
+		digito1 = numero[0]-'0';
+		digito2 = numero[1]-'0';
+		primerBanda  = valores_de_bandas[digito1];
+		segundaBanda = valores_de_bandas[digito2];
+		if(resistenciaEntera < 100){
+		    terceraBanda = "Naranja";
+		}else{
+			 terceraBanda = "Amarillo";
+		}
+	}else{
+		aux = resistenciaFlotante * 10;
+		numero = to_string(aux);
+		digito1 = numero[0]-'0';
+		digito2 = numero[1]-'0';
+		primerBanda  = valores_de_bandas[digito1];
+		segundaBanda = valores_de_bandas[digito2];
+		terceraBanda = "Rojo";
+	}
+
+	cout<<"\n--Impriendo Datos--";
+	cout<<"\nBanda 1: "<<primerBanda; cout<<"\nBanda 2: "<<segundaBanda; cout<<"\nBanda 3: "<<terceraBanda<<endl;
+	system("pause"); system("cls"); menu(); 
+}
+
+void buscar_MOhms(){
+	cout<<"Hola";
+}
+
+void buscar_GOhms(){
+	cout<<"Hola";
 }
